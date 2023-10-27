@@ -28,6 +28,8 @@ const SpringFallSerivce1 = ({navigation, route}) => {
   const [po, setPo] = useState(Math.floor(Math.random() * 90000) + 10000);
   const [isVisible, setIsVisible] = useState(false);
   const [customStep, setCustomStep] = useState('');
+  const [selected, setSelected] = useState(false);
+
   const [data, setData] = useState([
     {
       id: 1,
@@ -50,97 +52,97 @@ const SpringFallSerivce1 = ({navigation, route}) => {
       selected: false,
     },
     {
-      id: 1,
+      id: 5,
       name: 'Radiator',
       selected: false,
     },
     {
-      id: 2,
+      id: 6,
       name: 'Transfer Switch',
       selected: false,
     },
     {
-      id: 3,
+      id: 7,
       name: 'Battery',
       selected: false,
     },
     {
-      id: 4,
+      id: 8,
       name: 'Clean interior of generator',
       selected: false,
     },
     {
-      id: 1,
+      id: 9,
       name: 'Insure all exterior vents are clear of debris',
       selected: false,
     },
     {
-      id: 2,
+      id: 10,
       name: 'Transfer Power test',
       selected: false,
     },
     {
-      id: 3,
+      id: 11,
       name: 'Check voltage',
       selected: false,
     },
     {
-      id: 4,
+      id: 12,
       name: 'Check frequency',
       selected: false,
     },
     {
-      id: 2,
+      id: 13,
       name: 'Wipe down generator',
       selected: false,
     },
     {
-      id: 3,
+      id: 14,
       name: 'Lubricate transfer switch',
       selected: false,
     },
     {
-      id: 4,
+      id: 15,
       name: 'Check battery level and functioning',
       selected: false,
     },
     {
-      id: 2,
-      name: 'Check battery cable and tighten connections',
+      id: 16,
+      name: 'Check battery cable and connections at the battery and the engine',
       selected: false,
     },
     {
-      id: 3,
+      id: 17,
       name: 'Load bank as described in load bank details sheet',
       selected: false,
     },
     {
-      id: 4,
+      id: 18,
       name: 'Radiator level and antifreez temperature rating / check',
       selected: false,
     },
     {
-      id: 2,
+      id: 19,
       name: 'Add antifreeze if needed',
       selected: false,
     },
     {
-      id: 3,
+      id: 20,
       name: 'Replace oil and oil filter',
       selected: false,
     },
     {
-      id: 4,
+      id: 21,
       name: 'Replace air filter',
       selected: false,
     },
     {
-      id: 3,
+      id: 22,
       name: 'Proper recycling/disposal of all fluids',
       selected: false,
     },
     {
-      id: 4,
+      id: 23,
       name: 'Provide full written report',
       selected: false,
     },
@@ -180,6 +182,7 @@ const SpringFallSerivce1 = ({navigation, route}) => {
           data={data}
           renderItem={({item, index}) => (
             <View
+              key={index}
               style={{
                 marginVertical: 10,
                 flexDirection: 'row',
@@ -241,6 +244,41 @@ const SpringFallSerivce1 = ({navigation, route}) => {
           )}
         />
 
+        <TouchableOpacity
+          onPress={() => {
+            setSelected(!selected);
+          }}
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+          <Text
+            style={{
+              color: '#000',
+              fontWeight: 'bold',
+              marginVertical: 10,
+              marginRight: 15,
+              fontSize: 17,
+            }}>
+            Incomplete Job
+          </Text>
+          <View
+            style={{
+              backgroundColor: selected ? '#004890' : '#FFFFFF',
+              height: 30,
+              width: 30,
+
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5,
+              borderWidth: 1,
+              borderColor: '#004890',
+            }}>
+            <Icon
+              name="check"
+              color={selected ? '#FFFFFF' : '#FFFFFF'}
+              size={20}
+            />
+          </View>
+        </TouchableOpacity>
+
         <View
           style={{
             flexDirection: 'row',
@@ -272,6 +310,7 @@ const SpringFallSerivce1 = ({navigation, route}) => {
                   po: po,
                   checked: newArray,
                   fromfirstScreen: fromfirstScreen,
+                  incompleted: selected,
                 };
                 console.log(newData, 'AAAA');
                 console.log(newData);

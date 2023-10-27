@@ -64,87 +64,104 @@ const SpringFallSerivce6 = ({navigation, route}) => {
     },
   ]);
   useEffect(() => {
-    console.log('TOKEN', `Bearer ${user.access_token}`);
+    if (fromSecondScreen) {
+      setSelected(
+        fromSecondScreen.incompleted ? fromSecondScreen.incompleted : false,
+      );
+    }
   }, []);
+
   const submitService = () => {
     // console.log(fromSecondScreen);
     let data = new FormData();
     let newImages = [];
 
+    setLoading(true);
+
     if (fromSecondScreen) {
-      setLoading(true);
       console.log(image[0], 'FFFFAFAFAFAFAFAAFAFRFRFR');
-      if (image.some(e => e.photo_id != null)) {
-        image.map(item => {
-          // console.log(item);
-          newImages.push(item.photo_id);
-        });
-        console.log(newImages, 'AAAAAAAAA');
-        console.log('fromSecondScreen', fromSecondScreen);
-        var newArray = [];
-        fromSecondScreen.customData.map(item => {
-          newArray.push(item.name);
-        });
-        console.log(newArray, 'Material Test 123');
-        data.append('user_id', fromSecondScreen.user_id);
-        data.append('condition', fromSecondScreen.condition);
-        data.append('generator_id', fromSecondScreen.generator_id);
-        data.append('hours', fromSecondScreen.hours);
-        data.append('model', fromSecondScreen.model);
-        data.append('description', fromSecondScreen.ownerDescriptionOfProblem);
-        data.append('po', fromSecondScreen.po);
-        data.append('serial', fromSecondScreen.serial);
-        data.append('service_type', 'Warranty Call');
-        data.append('worked_perform', fromSecondScreen.workedPerformed);
-        data.append('date', fromSecondScreen.date);
-        data.append('time', fromSecondScreen.time);
-        data.append('tech_id', user.user.id);
-        data.append('status', selected ? 'incomplete' : 'complete');
-        // data.append('custom_field', newArray);
-        newArray.map(item => {
-          data.append('materials[]', item);
-        });
-        newImages.map(item => {
-          if (item) {
-            data.append('photo[]', item);
-          }
-        });
-        setLoading(false);
-        console.log('DATA', data);
-        console.log('IS THIS AN ARRAY', newArray);
-        var requestOptions = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'multipart/form-data;',
-            Authorization: `Bearer ${user.access_token}`,
-          },
-          body: data,
-        };
+      // if (image.some(e => e.photo_id != null)) {
+      image.map(item => {
+        // console.log(item);
+        newImages.push(item.photo_id);
+      });
+      console.log(newImages, 'AAAAAAAAA');
+      console.log('fromSecondScreen', fromSecondScreen);
+      var newArray = [];
+      fromSecondScreen.customData.map(item => {
+        newArray.push(item.name);
+      });
 
-        fetch(
-          // 'https://zacharydevworks.com/generator_app_backend/api/warranty-call',
-          'https://zacharydevworks.com/generator_app_backend/api/service-call',
-          requestOptions,
-        )
-          .then(response => response.text())
-          .then(result => {
-            console.log(result, 'FFFFFFFFF');
-            setLoading(false);
-            console.log('WE HAVE DONE THAT');
-            Toast.show(result);
-            navigation.replace('TechnicalMain');
-          })
-          .catch(error => {
-            setLoading(false);
-            console.log(error);
+      console.log(newArray, 'Material Test 123');
+      data.append('user_id', fromSecondScreen.user_id);
+      data.append('condition', fromSecondScreen.condition);
+      data.append('generator_id', fromSecondScreen.generator_id);
+      data.append('hours', fromSecondScreen.hours);
+      data.append('model', fromSecondScreen.model);
+      data.append('description', fromSecondScreen.ownerDescriptionOfProblem);
+      data.append('po', fromSecondScreen.po);
+      data.append('serial', fromSecondScreen.serial);
+      data.append('service_type', 'Warranty Call');
+      data.append('worked_perform', fromSecondScreen.workedPerformed);
+      data.append(
+        'date',
+        new Date()
+          .toISOString()
+          .replace(/T.*/, '')
+          .split('-')
+          .reverse()
+          .join('-'),
+      );
+      data.append('time', new Date().toLocaleTimeString());
+      data.append('tech_id', user.user.id);
+      data.append('status', selected ? 'incomplete' : 'complete');
 
-            Toast.show('Something Went Wrong');
-          });
-      } else {
-        setLoading(false);
+      // return;
+      // data.append('custom_field', newArray);
+      newArray.map(item => {
+        data.append('materials[]', item);
+      });
+      newImages.map(item => {
+        if (item && item != undefined) {
+          data.append('photo[]', item);
+        }
+      });
 
-        SimpleToast.show('Image is required.');
-      }
+      console.log('DATA', data);
+      console.log('IS THIS AN ARRAY', newArray);
+      var requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data;',
+          Authorization: `Bearer ${user.access_token}`,
+        },
+        body: data,
+      };
+
+      fetch(
+        // 'https://zacharydevworks.com/generator_app_backend/api/warranty-call',
+        'https://zacharydevworks.com/generator_app_backend/api/service-call',
+        requestOptions,
+      )
+        .then(response => response.text())
+        .then(result => {
+          console.log(result, 'FFFFFFFFF');
+          setLoading(false);
+          console.log('WE HAVE DONE THAT');
+          Toast.show(result);
+          navigation.replace('TechnicalMain');
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log(error);
+
+          Toast.show('Something Went Wrong');
+        });
+      // } else {
+      //   setLoading(false);
+
+      //   SimpleToast.show('Image is required.');
+      // }
     }
   };
 

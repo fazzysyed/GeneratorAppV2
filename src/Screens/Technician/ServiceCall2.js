@@ -8,7 +8,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from '../../components/Layout';
 import Camera from 'react-native-vector-icons/Feather';
 import {launchCamera} from 'react-native-image-picker';
@@ -38,6 +38,14 @@ const SpringFallSerivce6 = ({navigation, route}) => {
       image: null,
     },
   ]);
+
+  useEffect(() => {
+    if (fromSecondScreen) {
+      setSelected(
+        fromSecondScreen.incompleted ? fromSecondScreen.incompleted : false,
+      );
+    }
+  }, []);
 
   const submitService = () => {
     console.log(fromSecondScreen);
@@ -84,7 +92,7 @@ const SpringFallSerivce6 = ({navigation, route}) => {
       data.append('po', fromSecondScreen.po);
 
       newImages.map(item => {
-        if (item) {
+        if (item && item != undefined) {
           data.append('photo[]', item);
         }
       });
@@ -282,11 +290,11 @@ const SpringFallSerivce6 = ({navigation, route}) => {
             title={'Finish'}
             width={160}
             onPress={() => {
-              if (image.some(item => item.image !== null)) {
-                submitService();
-              } else {
-                SimpleToast.show('Image is required.');
-              }
+              // if (image.some(item => item.image !== null)) {
+              submitService();
+              // } else {
+              //   SimpleToast.show('Image is required.');
+              // }
 
               // navigation.navigate("SpringFallSerivce7",{
               //   fromSeventhScreen : newData

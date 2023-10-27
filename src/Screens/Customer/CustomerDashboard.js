@@ -16,9 +16,10 @@ const CustomerDashboard = ({navigation}) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.Reducer.user);
   const [loading, setLoading] = useState(false);
-  const [pickDate, setPickDate] = useState(new Date());
+
   const [date2, setDate2] = useState('');
   const [date, setDate] = useState('');
+  const [pickDate, setPickDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [data, setData] = useState([]);

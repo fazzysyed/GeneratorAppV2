@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import React from 'react';
 import Layout from '../../components/Layout';
 import {useDispatch} from 'react-redux';
@@ -15,6 +22,43 @@ const TechnicalMain = ({navigation}) => {
           dispatch(loginUser(null));
         });
       }}>
+      <TouchableOpacity
+        style={styles.adduser}
+        onPress={() => navigation.navigate('AddCustomer')}>
+        <View style={{marginHorizontal: 10, marginTop: 20}}>
+          <Text
+            style={{
+              color: '#222222',
+              fontWeight: '600',
+              marginVertical: 5,
+              fontSize: 20,
+              width: 150,
+            }}>
+            Add Customer
+          </Text>
+          <Text
+            style={{
+              color: '#222222',
+              fontWeight: '400',
+              marginVertical: 5,
+              fontSize: 14,
+              width: 150,
+            }}>
+            Add new customer with an older generator.
+          </Text>
+        </View>
+
+        <Image
+          source={require('../../Assets/Images/adduseragain.png')}
+          style={{
+            height: 200,
+            width: 200,
+            // position: 'absolute',
+            resizeMode: 'contain',
+            right: 0,
+          }}
+        />
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.card}
         onPress={() => navigation.navigate('CustomerSearch')}>
@@ -104,7 +148,7 @@ const TechnicalMain = ({navigation}) => {
               fontSize: 20,
               width: 150,
             }}>
-            In Complete Service Calls
+            Incomplete Service Calls
           </Text>
           <Text
             style={{
@@ -137,6 +181,16 @@ const TechnicalMain = ({navigation}) => {
 export default TechnicalMain;
 
 const styles = StyleSheet.create({
+  adduser: {
+    height: 230,
+    backgroundColor: '#ccc',
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: '#0048908F',
+    marginVertical: 20,
+  },
   card: {
     height: 230,
     backgroundColor: '#F4E0D1',

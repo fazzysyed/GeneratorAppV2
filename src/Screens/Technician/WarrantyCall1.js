@@ -27,6 +27,8 @@ const ServiceCall1 = ({navigation, route}) => {
   const [po, setPo] = useState(Math.floor(Math.random() * 90000) + 10000);
   const [note, setNote] = useState('');
   const [customData, setCustomData] = useState([]);
+  const [nopart, setNoPart] = useState(false);
+  const [selected, setSelected] = useState(false);
   const [warrantyData, setWarrantyData] = useState({
     condition: '',
     hours: '',
@@ -37,7 +39,9 @@ const ServiceCall1 = ({navigation, route}) => {
   });
 
   const [time, setTime] = useState(new Date().toLocaleTimeString());
-  const [date, setDate] = useState(new Date().toLocaleDateString());
+  const [date, setDate] = useState(
+    new Date().toISOString().replace(/T.*/, '').split('-').reverse().join('-'),
+  );
 
   const inputHandler = (name, event) => {
     setWarrantyData({...warrantyData, [name]: event});
@@ -374,23 +378,103 @@ const ServiceCall1 = ({navigation, route}) => {
           />
         </View>
       </View>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <TouchableOpacity
+          onPress={() => {
+            setNoPart(!nopart);
+          }}
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+          <Text
+            style={{
+              color: '#000',
+              fontWeight: 'bold',
+              marginVertical: 10,
+              marginRight: 15,
+              fontSize: 17,
+            }}>
+            No part used?
+          </Text>
+          <View
+            style={{
+              backgroundColor: nopart ? '#004890' : '#FFFFFF',
+              height: 30,
+              width: 30,
+
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5,
+              borderWidth: 1,
+              borderColor: '#004890',
+            }}>
+            <Icon
+              name="check"
+              color={nopart ? '#FFFFFF' : '#FFFFFF'}
+              size={20}
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setSelected(!selected);
+          }}
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+          <Text
+            style={{
+              color: '#000',
+              fontWeight: 'bold',
+              marginVertical: 10,
+              marginRight: 15,
+              fontSize: 17,
+            }}>
+            Incomplete Job
+          </Text>
+          <View
+            style={{
+              backgroundColor: selected ? '#004890' : '#FFFFFF',
+              height: 30,
+              width: 30,
+
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5,
+              borderWidth: 1,
+              borderColor: '#004890',
+            }}>
+            <Icon
+              name="check"
+              color={selected ? '#FFFFFF' : '#FFFFFF'}
+              size={20}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
       <View
         style={{
           justifyContent: 'space-between',
           flexDirection: 'row',
           marginBottom: 20,
         }}>
-        <Button
-          title={'Add Part'}
-          width={150}
-          onPress={() => {
-            setIsVisible(true);
-          }}
-        />
+        {!nopart ? (
+          <Button
+            title={'Add Part'}
+            width={150}
+            onPress={() => {
+              setIsVisible(true);
+            }}
+          />
+        ) : (
+          <View />
+        )}
         <Button
           title={'Next'}
           width={150}
           onPress={() => {
+            if (!nopart) {
+              if (customData.length === 0) {
+                SimpleToast.show('atleast one part is required.');
+                return;
+              }
+            }
             if (
               warrantyData.condition.length &&
               warrantyData.hours.length &&
@@ -413,6 +497,7 @@ const ServiceCall1 = ({navigation, route}) => {
                   generator_id: fromfirstScreen.generator_id,
                   date: date,
                   time: time,
+                  incompleted: selected,
                 },
               });
             } else {
@@ -421,6 +506,7 @@ const ServiceCall1 = ({navigation, route}) => {
           }}
         />
       </View>
+
       <Modal isVisible={isVisible}>
         <View style={styles.viewModal}>
           <View style={styles.textModal1}>

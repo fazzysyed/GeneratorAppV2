@@ -60,7 +60,7 @@ const Map = ({navigation}) => {
     getUsersLocation();
     console.log(lat, long, 'Fazzy');
     setLoading(true);
-    console.log('USER ID CHECKING'+ user.user.id);
+    console.log('USER ID CHECKING' + user.user.id);
 
     Geolocation.getCurrentPosition(
       async position => {
@@ -75,7 +75,7 @@ const Map = ({navigation}) => {
           },
           params: {
             tech_id: user.user.id,
-          }
+          },
         };
 
         axios(config)
@@ -85,7 +85,7 @@ const Map = ({navigation}) => {
             if (response.data) {
               setData(response.data);
             }
-             setCustomers(response.data.data)
+
             setTimeout(() => {
               setLoading(false);
             }, 2000);
@@ -128,7 +128,6 @@ const Map = ({navigation}) => {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA,
             }}>
-              
             {data.map(item => {
               console.log(item, 'Testing Data For Marker');
               return (

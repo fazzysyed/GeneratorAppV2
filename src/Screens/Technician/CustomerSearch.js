@@ -128,6 +128,8 @@ const CustomerSearch = ({navigation}) => {
         onChangeText={text => setSearch(text)}
         underlineColor="tranparent" // add this
         outlineColor="tranparent"
+        placeholder="Search"
+        placeholderTextColor={'#000'}
         style={{
           height: 45,
           borderTopLeftRadius: 8,

@@ -34,6 +34,8 @@ import {loginUser} from './src/store/Actions/actions';
 import Splash from './src/Screens/Splash';
 import InCompleteServiceCalls from './src/Screens/Technician/IncompleteSeriviceCalls';
 import UserNotifications from './src/Screens/Customer/UsersNotifications';
+import AddCustomer from './src/Screens/Technician/AddCustomer';
+import AddGenerator from './src/Screens/Technician/AddGenerator';
 
 const Stack = createStackNavigator();
 
@@ -100,6 +102,17 @@ const TechnicianStack = () => {
         name="TechnicalMain"
         component={TechnicalMain}
       />
+      <Stack.Screen
+        options={{headerShown: null}}
+        name="AddCustomer"
+        component={AddCustomer}
+      />
+      <Stack.Screen
+        options={{headerShown: null}}
+        name="AddGenerator"
+        component={AddGenerator}
+      />
+
       <Stack.Screen
         options={{headerShown: null}}
         name="CustomerSearch"

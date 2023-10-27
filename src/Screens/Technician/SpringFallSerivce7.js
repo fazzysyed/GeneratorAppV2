@@ -30,6 +30,14 @@ const SpringFallSerivce7 = ({navigation, route}) => {
     console.log(fromSeventhScreen, 'Hey there');
   }, []);
 
+  useEffect(() => {
+    if (fromSeventhScreen) {
+      setSelected(
+        fromSeventhScreen.incompleted ? fromSeventhScreen.incompleted : false,
+      );
+    }
+  }, []);
+
   const submitService = () => {
     return new Promise((resolve, reject) => {
       let data = new FormData();

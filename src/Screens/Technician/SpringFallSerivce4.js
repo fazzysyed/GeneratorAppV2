@@ -1,14 +1,15 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Layout from '../../components/Layout';
 import Camera from 'react-native-vector-icons/Feather';
 import {launchCamera} from 'react-native-image-picker';
 import Button from '../../components/Button';
 import SimpleToast from 'react-native-simple-toast';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const SpringFallSerivce4 = ({navigation, route}) => {
   const {fromFourthScreen} = route.params;
-
+  const [selected, setSelected] = useState(false);
   const [image, setImage] = useState(null);
 
   const getImage = () => {
@@ -20,6 +21,14 @@ const SpringFallSerivce4 = ({navigation, route}) => {
       }
     });
   };
+
+  useEffect(() => {
+    if (fromFourthScreen) {
+      setSelected(
+        fromFourthScreen.incompleted ? fromFourthScreen.incompleted : false,
+      );
+    }
+  }, []);
   return (
     <Layout back navigation={navigation}>
       <View style={{justifyContent: 'space-between', flex: 1}}>
@@ -69,6 +78,41 @@ const SpringFallSerivce4 = ({navigation, route}) => {
             </View>
           )}
         </View>
+
+        <TouchableOpacity
+          onPress={() => {
+            setSelected(!selected);
+          }}
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+          <Text
+            style={{
+              color: '#000',
+              fontWeight: 'bold',
+              marginVertical: 10,
+              marginRight: 15,
+              fontSize: 17,
+            }}>
+            Incomplete Job
+          </Text>
+          <View
+            style={{
+              backgroundColor: selected ? '#004890' : '#FFFFFF',
+              height: 30,
+              width: 30,
+
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5,
+              borderWidth: 1,
+              borderColor: '#004890',
+            }}>
+            <Icon
+              name="check"
+              color={selected ? '#FFFFFF' : '#FFFFFF'}
+              size={20}
+            />
+          </View>
+        </TouchableOpacity>
         <View style={{marginVertical: 200}}>
           <Button
             title={'Next'}
@@ -78,6 +122,7 @@ const SpringFallSerivce4 = ({navigation, route}) => {
                 let newData = {
                   ...fromFourthScreen,
                   inside_generator: image,
+                  incompleted: selected,
                 };
                 navigation.replace('SpringFallSerivce5', {
                   fromFifthScreen: newData,

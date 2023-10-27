@@ -1,4 +1,12 @@
-import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  Platform,
+  Linking,
+} from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import Layout from '../../components/Layout';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -9,6 +17,8 @@ import {useSelector} from 'react-redux';
 import Button from '../../components/Button';
 import IconC from 'react-native-vector-icons/AntDesign';
 import {black} from 'react-native-paper/lib/typescript/styles/colors';
+import Direction from 'react-native-vector-icons/Entypo';
+import MobileLocation from '../../Helper/MobileLocation';
 
 const CustomerDetails = ({navigation, route}) => {
   const scrollViewRef = useRef();
@@ -18,7 +28,8 @@ const CustomerDetails = ({navigation, route}) => {
   const [loading, setLoading] = useState(false);
   const {item} = route.params;
   const [selected, setSelected] = useState(0);
-
+  const [lat, setLat] = useState(0);
+  const [long, setLong] = useState(0);
   const onSelection = item => {
     let selectedID = selected;
     if (selectedID === item.id) {
@@ -28,7 +39,27 @@ const CustomerDetails = ({navigation, route}) => {
     }
   };
 
+  const getUsersLocation = async () => {
+    let res = await MobileLocation.getCurrentLocation();
+    console.log(res, 'IOS LOCATION');
+
+    if (res === undefined) {
+      setTimeout(async () => {
+        res = await MobileLocation.getCurrentLocation();
+        console.log(res, 'hello this is for thest');
+        if (res) {
+          setLat(res.coords.latitude);
+          setLong(res.coords.longitude);
+        }
+      }, 1000);
+    } else {
+      setLat(res.coords.latitude);
+      setLong(res.coords.longitude);
+    }
+  };
+
   useEffect(() => {
+    getUsersLocation();
     if (item) {
       setLoading(true);
       var config = {
@@ -55,7 +86,7 @@ const CustomerDetails = ({navigation, route}) => {
 
   return (
     <Layout back navigation={navigation}>
-      <TouchableOpacity
+      <View
         onPress={() => {
           navigation.navigate('CustomerDetial', {
             item: item,
@@ -139,8 +170,42 @@ const CustomerDetails = ({navigation, route}) => {
               {item.email ? item.email : 'not updated yet.'}
             </Text>
           </View>
+          <TouchableOpacity
+            onPress={() => {
+              let lat1 = parseFloat(item.latitude);
+              let lon = parseFloat(item.longitude);
+
+              console.warn(lat + `,` + long);
+              if (Platform === 'android' || 'ios') {
+                Linking.openURL(
+                  `https://www.google.com/maps/dir/?api=1&origin=` +
+                    lat +
+                    `,` +
+                    long +
+                    `&destination=` +
+                    lat1 +
+                    `,` +
+                    lon +
+                    `&travelmode=driving`,
+                );
+              } else {
+                console.log('Something Went Wrong?');
+              }
+            }}
+            style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Direction name="direction" color={'#004890'} size={25} />
+            <Text
+              style={{
+                color: '#222222',
+                width: 150,
+                marginHorizontal: 10,
+                marginVertical: 10,
+              }}>
+              Start Route
+            </Text>
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
+      </View>
 
       <FlatList
         ref={scrollViewRef}
@@ -430,7 +495,7 @@ export default CustomerDetails;
 
 const styles = StyleSheet.create({
   card: {
-    height: 150,
+    height: 200,
     backgroundColor: 'white',
     marginVertical: 10,
     borderRadius: 8,
