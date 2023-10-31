@@ -2,7 +2,7 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
-const Service = ({item, onPress}) => {
+const Service = ({item, onPress, showPress}) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.card}>
       <View>
@@ -14,7 +14,7 @@ const Service = ({item, onPress}) => {
             textAlign: 'center',
             fontSize: 16,
           }}>
-          {item.service_type}
+          {item.service_type ? item.service_type : 'Service Request'}
         </Text>
         <View style={{flexDirection: 'row', marginTop: 10}}>
           <Text style={{color: '#222222', marginHorizontal: 10}}>
@@ -36,10 +36,12 @@ const Service = ({item, onPress}) => {
           }}
         />
 
-        <Text
-          style={{color: '#222222', marginHorizontal: 10, marginVertical: 2}}>
-          View Details
-        </Text>
+        {!showPress && (
+          <Text
+            style={{color: '#222222', marginHorizontal: 10, marginVertical: 2}}>
+            View Details
+          </Text>
+        )}
         <Text
           style={{
             color: item.status === 'Incomplete' ? 'red' : '#222222',

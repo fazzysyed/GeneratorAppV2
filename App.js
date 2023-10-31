@@ -36,6 +36,7 @@ import InCompleteServiceCalls from './src/Screens/Technician/IncompleteSeriviceC
 import UserNotifications from './src/Screens/Customer/UsersNotifications';
 import AddCustomer from './src/Screens/Technician/AddCustomer';
 import AddGenerator from './src/Screens/Technician/AddGenerator';
+import History from './src/Screens/Technician/History';
 
 const Stack = createStackNavigator();
 
@@ -106,6 +107,11 @@ const TechnicianStack = () => {
         options={{headerShown: null}}
         name="AddCustomer"
         component={AddCustomer}
+      />
+      <Stack.Screen
+        options={{headerShown: null}}
+        name="History"
+        component={History}
       />
       <Stack.Screen
         options={{headerShown: null}}

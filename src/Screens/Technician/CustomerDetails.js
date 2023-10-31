@@ -206,7 +206,54 @@ const CustomerDetails = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
       </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignSelf: 'flex-end',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        {route.params.incompleted && (
+          <Text
+            style={{
+              color: 'red',
+              // width: 150,
+              fontWeight: '600',
+              marginHorizontal: 10,
+              marginVertical: 10,
+              fontSize: 18,
+            }}>
+            Has incomplete service call
+          </Text>
+        )}
 
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('History', {
+              userId: item.id,
+            });
+          }}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#004890',
+            width: 200,
+            alignSelf: 'flex-end',
+            justifyContent: 'center',
+            marginVertical: 10,
+            borderRadius: 5,
+          }}>
+          <Text
+            style={{
+              color: '#FFFFFF',
+              // width: 150,
+              marginHorizontal: 10,
+              marginVertical: 10,
+            }}>
+            History
+          </Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         ref={scrollViewRef}
         data={generators}

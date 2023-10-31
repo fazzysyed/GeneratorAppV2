@@ -163,9 +163,18 @@ const CustomerSearch = ({navigation}) => {
                 onPress={() => {
                   navigation.navigate('CustomerDetial', {
                     item: item,
+                    incompleted:
+                      item.hasInCompletedCalls === '1' ? true : false,
                   });
                 }}
-                style={styles.card}>
+                style={[
+                  styles.card,
+                  {
+                    borderWidth: item.hasInCompletedCalls === '1' ? 3 : 1,
+                    borderColor:
+                      item.hasInCompletedCalls === '1' ? 'red' : '#0048908F',
+                  },
+                ]}>
                 <View style={{marginRight: 10}}>
                   <View
                     style={{
@@ -257,8 +266,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginVertical: 10,
     borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#0048908F',
+
     justifyContent: 'space-between',
     flexDirection: 'row',
     padding: 20,
