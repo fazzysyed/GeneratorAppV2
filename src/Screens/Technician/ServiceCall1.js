@@ -31,6 +31,25 @@ const ServiceCall1 = ({navigation, route}) => {
   const [data, setData] = useState([]);
   const [nopart, setNoPart] = useState(false);
   const [selected, setSelected] = useState(false);
+
+  const [index, setIndex] = useState('');
+  const [editing, setEditing] = useState(false);
+
+  const editCustomItem = (index, text) => {
+    const editedCustomData = [...data];
+    const editedItem = editedCustomData[index];
+
+    // Assume you want to update the 'name' property of the custom item
+    // You can update any property as needed
+    editedItem.name = text;
+
+    setData(editedCustomData);
+    setIsVisible(false);
+    setEditing(false);
+    setCustomStep('');
+    setIndex('');
+  };
+
   return (
     <Layout back navigation={navigation}>
       <Text
@@ -112,9 +131,27 @@ const ServiceCall1 = ({navigation, route}) => {
           }}>
           <FlatList
             data={data}
-            renderItem={({item}) => (
-              <View style={{padding: 10, borderBottomWidth: 1}}>
+            renderItem={({item, index}) => (
+              <View
+                style={{
+                  padding: 10,
+                  borderBottomWidth: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }}>
                 <Text style={{color: '#000'}}>{item.name}</Text>
+
+                <Entypo
+                  name="edit"
+                  color={'#000'}
+                  size={20}
+                  onPress={() => {
+                    setEditing(true);
+                    setIndex(index);
+                    setCustomStep(item.name);
+                    setIsVisible(true);
+                  }}
+                />
               </View>
             )}
           />
@@ -269,6 +306,9 @@ const ServiceCall1 = ({navigation, route}) => {
             title={'Add Part'}
             width={150}
             onPress={() => {
+              setEditing(false);
+              setCustomStep('');
+              setIndex('');
               setIsVisible(true);
             }}
           />
@@ -364,15 +404,19 @@ const ServiceCall1 = ({navigation, route}) => {
               <TouchableOpacity
                 style={styles.otCancel}
                 onPress={() => {
-                  let newArray = [...data];
-                  newArray.push({
-                    id: data.length,
-                    name: customStep,
-                    custom: true,
-                  });
-                  setData(newArray);
-                  setIsVisible(false);
-                  setCustomStep('');
+                  if (editing) {
+                    editCustomItem(index, customStep);
+                  } else {
+                    let newArray = [...data];
+                    newArray.push({
+                      id: data.length,
+                      name: customStep,
+                      custom: true,
+                    });
+                    setData(newArray);
+                    setIsVisible(false);
+                    setCustomStep('');
+                  }
                 }}>
                 <Text style={styles.textCancel1}>Add</Text>
               </TouchableOpacity>

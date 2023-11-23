@@ -130,7 +130,7 @@ const SpringFallSerivce6 = ({navigation, route}) => {
             marginHorizontal: 30,
             textAlign: 'center',
           }}>
-          If Needed take extra pictures
+          If you need take extra pictures
         </Text>
 
         <FlatList

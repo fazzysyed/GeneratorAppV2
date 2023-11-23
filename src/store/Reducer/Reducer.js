@@ -1,28 +1,26 @@
-import { LOGIN_USER, SERVICE } from "../Actions/actionTypes";
+import {LOGIN_USER, SERVICE} from '../Actions/actionTypes';
 
 const initialState = {
-    user : null,
-    service : null,
+  user: null,
+  service: null,
 };
 
-
 const Reducer = (state = initialState, action) => {
-    const { type, payload } = action;
-  switch(type){
-    case LOGIN_USER : 
-    return {
+  const {type, payload} = action;
+  switch (type) {
+    case LOGIN_USER:
+      return {
         ...state,
         user: payload,
       };
-      case SERVICE : 
+    case SERVICE:
       return {
-          ...state,
-          service: payload,
-        };
+        ...state,
+        service: payload,
+      };
     default:
-        return state;
-    }
+      return state;
   }
-   
+};
 
-  export default Reducer
+export default Reducer;

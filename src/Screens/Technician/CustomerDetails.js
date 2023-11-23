@@ -75,6 +75,11 @@ const CustomerDetails = ({navigation, route}) => {
         .then(function (response) {
           console.log(response.data);
           setGenerators(response.data.generators);
+
+          if (response.data.generators) {
+            onSelection(response.data.generators[0]);
+          }
+
           setLoading(false);
         })
         .catch(function (error) {
@@ -464,6 +469,7 @@ const CustomerDetails = ({navigation, route}) => {
           </TouchableOpacity>
         )}
       />
+
       {selected ? (
         <>
           <View

@@ -109,10 +109,22 @@ const TechnicianStack = () => {
         name="AddCustomer"
         component={AddCustomer}
       />
+
+      <Stack.Screen
+        options={{headerShown: null}}
+        name="ServiceImages"
+        component={ServiceImages}
+      />
       <Stack.Screen
         options={{headerShown: null}}
         name="History"
         component={History}
+      />
+
+      <Stack.Screen
+        options={{headerShown: null}}
+        name="ServiceDetial"
+        component={ServiceDetails}
       />
       <Stack.Screen
         options={{headerShown: null}}

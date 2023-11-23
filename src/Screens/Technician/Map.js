@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   Platform,
   Linking,
+  Dimensions,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Layout from '../../components/Layout';
@@ -37,30 +38,8 @@ const Map = ({navigation}) => {
     console.log('onRegionChangeComplete', region);
   };
 
-  const getDirection = () => {};
-
-  const getUsersLocation = async () => {
-    let res = await MobileLocation.getCurrentLocation();
-    console.log(res, 'IOS LOCATION');
-
-    if (res === undefined) {
-      setTimeout(async () => {
-        res = await MobileLocation.getCurrentLocation();
-        if (res) {
-          setLat(location.coords.latitude);
-          setLong(location.coords.longitude);
-        }
-      }, 1000);
-    } else {
-      setLat(location.coords.latitude);
-      setLong(location.coords.longitude);
-    }
-  };
   useEffect(() => {
-    getUsersLocation();
-    console.log(lat, long, 'Fazzy');
     setLoading(true);
-    console.log('USER ID CHECKING' + user.user.id);
 
     Geolocation.getCurrentPosition(
       async position => {
@@ -80,7 +59,6 @@ const Map = ({navigation}) => {
 
         axios(config)
           .then(function (response) {
-            console.log('this is response data below');
             console.log(response);
             if (response.data) {
               setData(response.data);
@@ -97,9 +75,6 @@ const Map = ({navigation}) => {
       },
       async error => {
         console.log(error.message);
-        if (Platform.OS === 'android') {
-          await _enableGPS();
-        }
       },
       {
         enableHighAccuracy: false,
@@ -110,68 +85,71 @@ const Map = ({navigation}) => {
   }, []);
   return (
     <Layout back={true} navigation={navigation}>
-      <View style={{flex: 1, height: 600}}>
+      <View style={{flex: 1, height: Dimensions.get('window').height}}>
         {loading ? (
           <ActivityIndicator />
         ) : (
-          <MapView
-            style={{flex: 1}}
-            provider={PROVIDER_GOOGLE}
-            showsUserLocation
-            onMapReady={onMapReady}
-            showsMyLocationButton={false}
-            onRegionChange={onRegionChange}
-            onRegionChangeComplete={onRegionChangeComplete}
-            initialRegion={{
-              latitude: lat,
-              longitude: long,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA,
-            }}>
-            {data.map(item => {
-              console.log(item, 'Testing Data For Marker');
-              return (
-                <Marker
-                  onPress={() => {
-                    navigation.navigate('CustomerDetial2', {
-                      item: item.customer,
-                    });
-                    console.log(item, 'Hello');
-                    let lat = parseFloat(item.latitude);
-                    let lon = parseFloat(item.longitude);
+          <>
+            {lat && long ? (
+              <MapView
+                style={{flex: 1}}
+                provider={PROVIDER_GOOGLE}
+                showsUserLocation
+                onMapReady={onMapReady}
+                showsMyLocationButton={false}
+                onRegionChange={onRegionChange}
+                onRegionChangeComplete={onRegionChangeComplete}
+                initialRegion={{
+                  latitude: '33.6427135',
+                  longitude: '73.0809961',
+                  latitudeDelta: LATITUDE_DELTA,
+                  longitudeDelta: LONGITUDE_DELTA,
+                }}>
+                {data.map(item => {
+                  if (item.customer.latitude && item.customer.longitude) {
+                    console.log(item, 'Testing Data For Marker');
+                    return (
+                      <Marker
+                        onPress={() => {
+                          navigation.navigate('CustomerDetial', {
+                            item: item.customer,
+                          });
 
-                    if (Platform === 'android') {
-                      Linking.openURL(
-                        `https://www.google.com/maps/dir/?api=1&origin=` +
-                          lat +
-                          `,` +
-                          long +
-                          `&destination=` +
-                          lat +
-                          `,` +
-                          lon +
-                          `&travelmode=driving`,
-                      );
-                    } else {
-                      console.log('Something Went Wrong?');
-                    }
-                  }}
-                  title={item.customer.fname}
-                  draggable
-                  pinColor="#1A98D5"
-                  image={require('../markerImage/marker.png')}
-                  coordinate={{
-                    latitude: parseFloat(item.customer.latitude),
-                    longitude: parseFloat(item.customer.longitude),
-                    latitudeDelta: LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA,
-                  }}
-                  onCalloutPress={e => {
-                    console.log('Marker was clicked', e);
-                  }}></Marker>
-              );
-            })}
-          </MapView>
+                          console.log(item, 'Hello');
+                          // let lat = parseFloat(item.customer.latitude);
+                          // let lon = parseFloat(item.customer.longitude);
+
+                          // Linking.openURL(
+                          //   `https://www.google.com/maps/dir/?api=1&origin=` +
+                          //     lat +
+                          //     `,` +
+                          //     long +
+                          //     `&destination=` +
+                          //     lat +
+                          //     `,` +
+                          //     lon +
+                          //     `&travelmode=driving`,
+                          // );
+                        }}
+                        title={item.customer.fname}
+                        draggable
+                        pinColor="#1A98D5"
+                        image={require('../markerImage/marker.png')}
+                        coordinate={{
+                          latitude: parseFloat(item.customer.latitude),
+                          longitude: parseFloat(item.customer.longitude),
+                          latitudeDelta: LATITUDE_DELTA,
+                          longitudeDelta: LONGITUDE_DELTA,
+                        }}
+                        onCalloutPress={e => {
+                          console.log('Marker was clicked', e);
+                        }}></Marker>
+                    );
+                  }
+                })}
+              </MapView>
+            ) : null}
+          </>
         )}
       </View>
     </Layout>

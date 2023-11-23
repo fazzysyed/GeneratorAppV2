@@ -33,7 +33,7 @@ const History = ({route, navigation}) => {
     },
     {
       key: 'second',
-      label: 'Incompleted',
+      label: 'Incomplete',
     },
     {
       key: 'third',
@@ -114,14 +114,34 @@ const History = ({route, navigation}) => {
             <FlatList
               style={{marginTop: 10}}
               data={data.filter(item => item.status === 'complete').reverse()}
-              renderItem={({item}) => <Service showPress={true} item={item} />}
+              renderItem={({item}) => (
+                <Service
+                  showPress={true}
+                  item={item}
+                  onPress={() => {
+                    navigation.navigate('ServiceDetial', {
+                      id: item.id,
+                    });
+                  }}
+                />
+              )}
             />
           )}
           {index === 'second' && (
             <FlatList
               style={{marginTop: 10}}
               data={data.filter(item => item.status === 'incomplete').reverse()}
-              renderItem={({item}) => <Service showPress={true} item={item} />}
+              renderItem={({item}) => (
+                <Service
+                  showPress={true}
+                  item={item}
+                  onPress={() => {
+                    navigation.navigate('ServiceDetial', {
+                      id: item.id,
+                    });
+                  }}
+                />
+              )}
             />
           )}
           {index === 'third' && (
@@ -157,7 +177,7 @@ const styles = StyleSheet.create({
   },
   tabTitle: {
     color: '#FFFFFF',
-    fontSize: 19,
+    fontSize: 16,
     textAlign: 'center',
   },
   tabContainer: {
