@@ -35,42 +35,45 @@ const AddGenerator = ({route, navigation}) => {
   const [open2, setOpen2] = useState(false);
   const [type, setType] = useState('');
   const [warrantyPeriod, setWarrantyPeriod] = useState('');
+  const [transferSwitchLocation, setTransferSwitchLocation] = useState('');
+  const [serviceKit, setServiceKit] = useState('');
 
   const user = useSelector(state => state.Reducer.user);
+  const [generatorTypes, setGeneratorTypes] = useState('');
 
-  const [generatorTypes, setGeneratorTypes] = useState([
-    {
-      name: 'A',
-      value: 'A',
-    },
-    {
-      name: 'B',
-      value: 'B',
-    },
-    {
-      name: 'C',
-      value: 'C',
-    },
-  ]);
+  // const [generatorTypes, setGeneratorTypes] = useState([
+  //   {
+  //     name: 'A',
+  //     value: 'A',
+  //   },
+  //   {
+  //     name: 'B',
+  //     value: 'B',
+  //   },
+  //   {
+  //     name: 'C',
+  //     value: 'C',
+  //   },
+  // ]);
 
-  const warranty = [
-    {
-      name: '6 Months',
-      value: '6 Months',
-    },
-    {
-      name: '1 Year',
-      value: '1 Year',
-    },
-    {
-      name: '2 Year',
-      value: '2 Year',
-    },
-    {
-      name: '3 Year',
-      value: '3 Year',
-    },
-  ];
+  // const warranty = [
+  //   {
+  //     name: '6 Months',
+  //     value: '6 Months',
+  //   },
+  //   {
+  //     name: '1 Year',
+  //     value: '1 Year',
+  //   },
+  //   {
+  //     name: '2 Year',
+  //     value: '2 Year',
+  //   },
+  //   {
+  //     name: '3 Year',
+  //     value: '3 Year',
+  //   },
+  // ];
 
   const formatDate = date => {
     const d = new Date(date);
@@ -91,12 +94,26 @@ const AddGenerator = ({route, navigation}) => {
   };
 
   const technicianLogin = () => {
+    console.log(
+      brandName.length,
+      serialNumber.length,
+      modelNumber.length,
+      installDate.length,
+      location.length,
+      transferSwitchLocation.length,
+      serviceKit.length,
+      warrantyStartDate.length,
+      warrantyPeriod.length,
+      type.length,
+    );
     if (
       brandName.length &&
       serialNumber.length &&
       modelNumber.length &&
       installDate.length &&
       location.length &&
+      transferSwitchLocation.length &&
+      serviceKit.length &&
       warrantyStartDate.length &&
       warrantyPeriod.length &&
       type.length
@@ -111,7 +128,10 @@ const AddGenerator = ({route, navigation}) => {
         warranty_period: warrantyPeriod,
         install_date: installDate,
         warranty_sdate: warrantyStartDate,
+        transfer_switch_location: transferSwitchLocation,
+        service_kit_number: serviceKit,
       };
+
       setLoading(true);
       var config = {
         method: 'post',
@@ -236,7 +256,25 @@ const AddGenerator = ({route, navigation}) => {
           style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
           Generator Type
         </Text>
-        <View
+
+        <TextInput
+          value={generatorTypes}
+          onChangeText={text => setType(text)}
+          activeUnderlineColor="#000"
+          underlineColor="tranparent" // add this
+          outlineColor="#000"
+          style={{
+            height: 50,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            borderBottomLeftRadius: 8,
+            borderBottomRightRadius: 8,
+            borderWidth: 1,
+            borderColor: '#0048908F',
+            marginVertical: 10,
+          }}
+        />
+        {/* <View
           style={{
             flexDirection: 'row',
             // justifyContent: 'space-between',
@@ -277,7 +315,7 @@ const AddGenerator = ({route, navigation}) => {
               </TouchableOpacity>
             </View>
           ))}
-        </View>
+        </View> */}
 
         {/* Install Date */}
         <Text
@@ -298,9 +336,54 @@ const AddGenerator = ({route, navigation}) => {
             backgroundColor: '#ffffff',
             justifyContent: 'center',
           }}
-          onPress={() => setOpen(true)}>
+          onPress={() => {
+            if (installDate != 'NA') {
+              setOpen(true);
+            }
+          }}>
           <Text style={{color: '#000', marginLeft: 10}}>{installDate}</Text>
         </TouchableOpacity>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            // marginRight: 50,
+          }}>
+          <Text
+            style={{
+              color: '#222222',
+              fontWeight: 'bold',
+              marginVertical: 10,
+              fontSize: 18,
+
+              marginHorizontal: 10,
+            }}>
+            NA
+          </Text>
+
+          <TouchableOpacity
+            onPress={() => {
+              if (installDate != 'NA') {
+                setInstallDate('NA');
+              } else {
+                setInstallDate('');
+              }
+            }}
+            style={{
+              backgroundColor: installDate === 'NA' ? '#004890' : '#FFFFFF',
+              height: 25,
+              width: 25,
+
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 5,
+              borderWidth: 1,
+              borderColor: '#004890',
+            }}>
+            <Icon name="check" color={'#FFFFFF'} size={20} />
+          </TouchableOpacity>
+        </View>
 
         {/* Last Service Date */}
         {/* <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
@@ -327,11 +410,53 @@ const AddGenerator = ({route, navigation}) => {
         {/* Location */}
         <Text
           style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
-          Location
+          Generator Location
         </Text>
         <TextInput
           value={location}
           onChangeText={text => setLocation(text)}
+          activeUnderlineColor="#000"
+          underlineColor="tranparent" // add this
+          outlineColor="#000"
+          style={{
+            height: 50,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            borderBottomLeftRadius: 8,
+            borderBottomRightRadius: 8,
+            borderWidth: 1,
+            borderColor: '#0048908F',
+            marginVertical: 10,
+          }}
+        />
+        <Text
+          style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
+          Transfer Switch Location
+        </Text>
+        <TextInput
+          value={transferSwitchLocation}
+          onChangeText={text => setTransferSwitchLocation(text)}
+          activeUnderlineColor="#000"
+          underlineColor="tranparent" // add this
+          outlineColor="#000"
+          style={{
+            height: 50,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            borderBottomLeftRadius: 8,
+            borderBottomRightRadius: 8,
+            borderWidth: 1,
+            borderColor: '#0048908F',
+            marginVertical: 10,
+          }}
+        />
+        <Text
+          style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
+          Service Kit #
+        </Text>
+        <TextInput
+          value={serviceKit}
+          onChangeText={text => setServiceKit(text)}
           activeUnderlineColor="#000"
           underlineColor="tranparent" // add this
           outlineColor="#000"
@@ -376,7 +501,25 @@ const AddGenerator = ({route, navigation}) => {
           Warranty Period
         </Text>
 
-        <FlatList
+        <TextInput
+          value={warrantyPeriod}
+          onChangeText={text => setWarrantyPeriod(text)}
+          activeUnderlineColor="#000"
+          underlineColor="tranparent" // add this
+          outlineColor="#000"
+          style={{
+            height: 50,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            borderBottomLeftRadius: 8,
+            borderBottomRightRadius: 8,
+            borderWidth: 1,
+            borderColor: '#0048908F',
+            marginVertical: 10,
+          }}
+        />
+
+        {/* <FlatList
           style={{marginBottom: 30}}
           data={warranty}
           horizontal
@@ -416,7 +559,7 @@ const AddGenerator = ({route, navigation}) => {
               </TouchableOpacity>
             </View>
           )}
-        />
+        /> */}
 
         <View style={{marginVertical: 30}}>
           <Button

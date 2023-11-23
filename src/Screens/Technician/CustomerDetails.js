@@ -474,7 +474,7 @@ const CustomerDetails = ({navigation, route}) => {
             <Button
               title={'Start Spring Service'}
               onPress={() => {
-                navigation.navigate('SpringFallSerivce1', {
+                navigation.navigate('Reading', {
                   fromfirstScreen: {
                     service_type: 'Spring Service',
                     user_id: item.id,
@@ -488,7 +488,7 @@ const CustomerDetails = ({navigation, route}) => {
               title={'Start Fall Service'}
               width={160}
               onPress={() => {
-                navigation.navigate('SpringFallSerivce1', {
+                navigation.navigate('Reading', {
                   fromfirstScreen: {
                     service_type: 'Fall Service',
                     user_id: item.id,
@@ -506,7 +506,7 @@ const CustomerDetails = ({navigation, route}) => {
             <Button
               title={'Start Service Call'}
               onPress={() => {
-                navigation.navigate('ServiceCall1', {
+                navigation.navigate('Reading', {
                   fromfirstScreen: {
                     service_type: 'Service Call',
                     user_id: item.id,
@@ -520,7 +520,7 @@ const CustomerDetails = ({navigation, route}) => {
               title={'Start Warranty Call'}
               width={160}
               onPress={() => {
-                navigation.navigate('WarrantyCall1', {
+                navigation.navigate('Reading', {
                   fromfirstScreen: {
                     service_type: 'Warranty Call',
                     user_id: item.id,

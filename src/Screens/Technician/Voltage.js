@@ -13,90 +13,65 @@ import {useDispatch} from 'react-redux';
 import Toast from 'react-native-simple-toast';
 import {add} from 'react-native-reanimated';
 import MobileLocation from '../../Helper/MobileLocation';
-const AddCustomer = ({navigation}) => {
+const AddReadings = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [address, setAdddress] = useState('');
-  const [city, setCity] = useState('');
-  const [lat, setLat] = useState('');
-  const [long, setLong] = useState('');
-  const [state, setState] = useState('');
-  const [zip, setZip] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const {fromfirstScreen} = route.params;
+  const [voltageReading, setVoltageReading] = useState('');
+  const [l1, setL1] = useState('');
+  const [l2, setL2] = useState('');
+  const [l3, setL3] = useState('');
   const [techloading, setTechloading] = useState(false);
-  const [secure, setSecure] = useState(false);
-  const [homephone, setHomePhone] = useState('');
-  const [mobile, setMobile] = useState('');
-
-  const getUsersLocation = async () => {
-    let res = await MobileLocation.getCurrentLocation();
-    console.log(res, 'IOS LOCATION');
-
-    if (res === undefined) {
-      setTimeout(async () => {
-        res = await MobileLocation.getCurrentLocation();
-        console.log(res, 'hello this is for thest');
-        if (res) {
-          setLat(res.coords.latitude);
-          setLong(res.coords.longitude);
-        }
-      }, 1000);
-    } else {
-      setLat(res.coords.latitude);
-      setLong(res.coords.longitude);
-    }
-  };
-
-  // useEffect(() => {
-  //   getUsersLocation();
-  // }, []);
+  const [phase, setPhase] = useState('');
+  const [frequency, setFrequency] = useState('');
+  const [btryVoltage, setBtryVoltage] = useState('');
+  const [generatorHours, setGeneratorHours] = useState('');
 
   const technicianLogin = () => {
-    navigation.navigate('AddGenerator', {
-      data: {
-        email: email,
-        // password: password,
-        fname: name,
-        address: address,
-        homephone: homephone,
-        mobile: mobile,
-        // latitude: lat,
-        // longitude: long,
-        zip: zip,
-        customeraddress: address,
-        state: state,
-      },
-    });
-    if (
-      email.length &&
-      homephone.length &&
-      mobile.length &&
-      // password.length &&
-      name.length &&
-      address.length &&
-      zip.length &&
-      city.length &&
-      address.length
-    ) {
-      navigation.navigate('AddGenerator', {
-        data: {
-          email: email,
-          // password: password,
-          fname: name,
-          address: address,
-          home_phone: homephone,
-          mobile: mobile,
-          // latitude: lat,
-          // longitude: long,
-          zip: zip,
-          customeraddress: address,
-          state: state,
+    let data = {
+      voltage_reading: voltageReading,
+      l1: l1,
+      l2: l2,
+      l3: l3,
+      phase: phase,
+      frequency: frequency,
+      battery_voltage: btryVoltage,
+      hours: generatorHours,
+    };
+
+    if (fromfirstScreen.service_type === 'Service Call') {
+      navigation.navigate('ServiceCall1', {
+        fromfirstScreen: {
+          ...fromfirstScreen,
+          voltageData: data,
         },
       });
-    } else {
-      Toast.show('All fields are required.');
+    }
+
+    if (fromfirstScreen.service_type === 'Warranty Call') {
+      navigation.navigate('WarrantyCall1', {
+        fromfirstScreen: {
+          ...fromfirstScreen,
+          voltageData: data,
+        },
+      });
+    }
+
+    if (fromfirstScreen.service_type === 'Fall Service') {
+      navigation.navigate('SpringFallSerivce1', {
+        fromfirstScreen: {
+          ...fromfirstScreen,
+          voltageData: data,
+        },
+      });
+    }
+
+    if (fromfirstScreen.service_type === 'Spring Service') {
+      navigation.navigate('SpringFallSerivce1', {
+        fromfirstScreen: {
+          ...fromfirstScreen,
+          voltageData: data,
+        },
+      });
     }
   };
   return (
@@ -108,15 +83,38 @@ const AddCustomer = ({navigation}) => {
           marginVertical: 5,
           fontSize: 20,
         }}>
-        Add New Customer
+        Add Information
       </Text>
 
       <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
-        Customer Name
+        Voltage Readings
       </Text>
       <TextInput
-        value={name}
-        onChangeText={text => setName(text)}
+        value={voltageReading}
+        onChangeText={text => setVoltageReading(text)}
+        activeUnderlineColor="#000"
+        underlineColor="tranparent" // add this
+        outlineColor="#000"
+        keyboardType="numeric"
+        style={{
+          height: 50,
+          borderTopLeftRadius: 8,
+          borderTopRightRadius: 8,
+          borderBottomLeftRadius: 8,
+          borderBottomRightRadius: 8,
+          borderWidth: 1,
+          borderColor: '#0048908F',
+          marginVertical: 10,
+        }}
+      />
+
+      <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
+        L1 Reading
+      </Text>
+      <TextInput
+        keyboardType="numeric"
+        value={l1}
+        onChangeText={text => setL1(text)}
         activeUnderlineColor="#000"
         underlineColor="tranparent" // add this
         outlineColor="#000"
@@ -133,61 +131,13 @@ const AddCustomer = ({navigation}) => {
       />
 
       <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
-        Email
-      </Text>
-      <TextInput
-        value={email}
-        onChangeText={text => setEmail(text)}
-        activeUnderlineColor="#000"
-        underlineColor="tranparent" // add this
-        outlineColor="#000"
-        style={{
-          height: 50,
-          borderTopLeftRadius: 8,
-          borderTopRightRadius: 8,
-          borderBottomLeftRadius: 8,
-          borderBottomRightRadius: 8,
-          borderWidth: 1,
-          borderColor: '#0048908F',
-          marginVertical: 10,
-        }}
-      />
-      {/* <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
-        Password
+        L2 Reading
       </Text>
 
       <TextInput
-        value={password}
-        onChangeText={text => setPassword(text)}
-        secureTextEntry={secure}
-        activeUnderlineColor="#000"
-        underlineColor="tranparent" // add this
-        outlineColor="#transparent"
-        style={{
-          height: 45,
-          borderTopLeftRadius: 8,
-          borderTopRightRadius: 8,
-          borderBottomLeftRadius: 8,
-          borderBottomRightRadius: 8,
-          borderWidth: 1,
-          borderColor: '#0048908F',
-        }}
-        right={
-          <TextInput.Icon
-            name="eye"
-            onPress={() => {
-              setSecure(!secure);
-            }}
-          />
-        }
-      /> */}
-      <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
-        Address
-      </Text>
-
-      <TextInput
-        value={address}
-        onChangeText={text => setAdddress(text)}
+        keyboardType="numeric"
+        value={l2}
+        onChangeText={text => setL2(text)}
         activeUnderlineColor="#000"
         underlineColor="tranparent" // add this
         outlineColor="#transparent"
@@ -203,75 +153,13 @@ const AddCustomer = ({navigation}) => {
       />
 
       <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
-        Home Phone
+        L3 Reading
       </Text>
 
       <TextInput
-        value={homephone}
-        onChangeText={text => setHomePhone(text)}
-        activeUnderlineColor="#000"
-        underlineColor="tranparent" // add this
-        outlineColor="#transparent"
-        keyboardType="number-pad"
-        style={{
-          height: 45,
-          borderTopLeftRadius: 8,
-          borderTopRightRadius: 8,
-          borderBottomLeftRadius: 8,
-          borderBottomRightRadius: 8,
-          borderWidth: 1,
-          borderColor: '#0048908F',
-        }}
-      />
-      <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
-        Mobile Phone
-      </Text>
-
-      <TextInput
-        value={mobile}
-        onChangeText={text => setMobile(text)}
-        activeUnderlineColor="#000"
-        underlineColor="tranparent" // add this
-        outlineColor="#transparent"
-        keyboardType="number-pad"
-        style={{
-          height: 45,
-          borderTopLeftRadius: 8,
-          borderTopRightRadius: 8,
-          borderBottomLeftRadius: 8,
-          borderBottomRightRadius: 8,
-          borderWidth: 1,
-          borderColor: '#0048908F',
-        }}
-      />
-
-      <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
-        City
-      </Text>
-
-      <TextInput
-        value={city}
-        onChangeText={text => setCity(text)}
-        activeUnderlineColor="#000"
-        underlineColor="tranparent" // add this
-        outlineColor="#transparent"
-        style={{
-          height: 45,
-          borderTopLeftRadius: 8,
-          borderTopRightRadius: 8,
-          borderBottomLeftRadius: 8,
-          borderBottomRightRadius: 8,
-          borderWidth: 1,
-          borderColor: '#0048908F',
-        }}
-      />
-      {/* <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
-        Latitude
-      </Text>
-
-      <TextInput
-        value={lat.toString()}
-        editable={false}
+        keyboardType="numeric"
+        value={l3}
+        onChangeText={text => setL3(text)}
         activeUnderlineColor="#000"
         underlineColor="tranparent" // add this
         outlineColor="#transparent"
@@ -286,15 +174,16 @@ const AddCustomer = ({navigation}) => {
         }}
       />
       <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
-        Longitude
+        Phase to Phase Reading
       </Text>
 
       <TextInput
-        value={long.toString()}
-        editable={false}
+        keyboardType="numeric"
+        value={phase}
+        onChangeText={text => setPhase(text)}
         activeUnderlineColor="#000"
         underlineColor="tranparent" // add this
-        outlineColor="#transparent"
+        outlineColor="transparent"
         style={{
           height: 45,
           borderTopLeftRadius: 8,
@@ -304,17 +193,41 @@ const AddCustomer = ({navigation}) => {
           borderWidth: 1,
           borderColor: '#0048908F',
         }}
-      /> */}
+      />
+
       <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
-        State
+        Frequency Reading
       </Text>
 
       <TextInput
-        value={state}
-        onChangeText={e => setState(e)}
+        value={frequency}
+        onChangeText={text => setFrequency(text)}
         activeUnderlineColor="#000"
         underlineColor="tranparent" // add this
-        outlineColor="#transparent"
+        outlineColor="transparent"
+        keyboardType="numeric"
+        style={{
+          height: 45,
+          borderTopLeftRadius: 8,
+          borderTopRightRadius: 8,
+          borderBottomLeftRadius: 8,
+          borderBottomRightRadius: 8,
+          borderWidth: 1,
+          borderColor: '#0048908F',
+        }}
+      />
+
+      <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
+        Static Battery Voltage Reading
+      </Text>
+
+      <TextInput
+        value={btryVoltage}
+        keyboardType="numeric"
+        onChangeText={e => setBtryVoltage(e)}
+        activeUnderlineColor="#000"
+        underlineColor="tranparent" // add this
+        outlineColor="transparent"
         style={{
           height: 45,
           borderTopLeftRadius: 8,
@@ -326,16 +239,16 @@ const AddCustomer = ({navigation}) => {
         }}
       />
       <Text style={{color: '#222222', fontWeight: 'bold', marginVertical: 10}}>
-        Zip
+        Generator Hours Reading
       </Text>
 
       <TextInput
-        value={zip}
-        onChangeText={e => setZip(e)}
-        keyboardType="number-pad"
+        value={generatorHours}
+        onChangeText={e => setGeneratorHours(e)}
+        keyboardType="numeric"
         activeUnderlineColor="#000"
         underlineColor="tranparent" // add this
-        outlineColor="#transparent"
+        outlineColor="transparent"
         style={{
           height: 45,
           borderTopLeftRadius: 8,
@@ -354,7 +267,7 @@ const AddCustomer = ({navigation}) => {
           alignItems: 'center',
         }}>
         <Button
-          title={'Create'}
+          title={'Next'}
           width={160}
           onPress={() => technicianLogin()}
           loading={techloading}
@@ -370,4 +283,4 @@ const AddCustomer = ({navigation}) => {
   );
 };
 
-export default AddCustomer;
+export default AddReadings;

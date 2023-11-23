@@ -300,6 +300,7 @@ const ServiceCall1 = ({navigation, route}) => {
                   service_type: fromfirstScreen.service_type,
                   generator_id: fromfirstScreen.generator_id,
                   incompleted: selected,
+                  voltageData: fromfirstScreen.voltageData,
                 },
               });
             }

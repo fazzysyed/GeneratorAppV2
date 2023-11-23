@@ -498,6 +498,7 @@ const ServiceCall1 = ({navigation, route}) => {
                   date: date,
                   time: time,
                   incompleted: selected,
+                  voltageData: fromfirstScreen.voltageData,
                 },
               });
             } else {

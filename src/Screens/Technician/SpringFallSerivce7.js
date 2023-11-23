@@ -124,6 +124,55 @@ const SpringFallSerivce7 = ({navigation, route}) => {
           fromSeventhScreen.fromfirstScreen.generator_id,
         );
 
+        data.append(
+          'voltage_reading',
+          fromSeventhScreen.fromfirstScreen.voltageData.voltage_reading
+            ? fromSeventhScreen.fromfirstScreen.voltageData.voltage_reading
+            : 0,
+        );
+        data.append(
+          'l1',
+          fromSeventhScreen.fromfirstScreen.voltageData.l1
+            ? fromSeventhScreen.fromfirstScreen.voltageData.l1
+            : 0,
+        );
+        data.append(
+          'l2',
+          fromSeventhScreen.fromfirstScreen.voltageData.l2
+            ? fromSeventhScreen.fromfirstScreen.voltageData.l2
+            : 0,
+        );
+        data.append(
+          'l3',
+          fromSeventhScreen.fromfirstScreen.voltageData.l3
+            ? fromSeventhScreen.fromfirstScreen.voltageData.l3
+            : 0,
+        );
+        data.append(
+          'phase',
+          fromSeventhScreen.fromfirstScreen.voltageData.phase
+            ? fromSeventhScreen.fromfirstScreen.voltageData.phase
+            : 0,
+        );
+        data.append(
+          'frequency',
+          fromSeventhScreen.fromfirstScreen.voltageData.frequency
+            ? fromSeventhScreen.fromfirstScreen.voltageData.frequency
+            : 0,
+        );
+        data.append(
+          'battery_voltage',
+          fromSeventhScreen.fromfirstScreen.voltageData.battery_voltage
+            ? fromSeventhScreen.fromfirstScreen.voltageData.battery_voltage
+            : 0,
+        );
+        data.append(
+          'hours',
+          fromSeventhScreen.fromfirstScreen.voltageData.hours
+            ? fromSeventhScreen.fromfirstScreen.voltageData.hours
+            : 0,
+        );
+
         newImages.map(item => {
           if (item) {
             data.append('photo[]', item);
@@ -236,7 +285,8 @@ const SpringFallSerivce7 = ({navigation, route}) => {
                 setLoading(false);
                 navigation.replace('TechnicalMain');
               })
-              .catch(() => {
+              .catch(e => {
+                console.log(e);
                 Toast.show('Something Went Wrong');
 
                 setLoading(false);
@@ -263,7 +313,7 @@ const SpringFallSerivce7 = ({navigation, route}) => {
                   },
                 });
               })
-              .catch(() => {
+              .catch(e => {
                 Toast.show('Something Went Wrong');
 
                 setService(false);

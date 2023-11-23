@@ -116,6 +116,49 @@ const SpringFallSerivce6 = ({navigation, route}) => {
       data.append('tech_id', user.user.id);
       data.append('status', selected ? 'incomplete' : 'complete');
 
+      data.append(
+        'voltage_reading',
+        fromSecondScreen.voltageData.voltage_reading
+          ? fromSecondScreen.voltageData.voltage_reading
+          : 0,
+      );
+      data.append(
+        'l1',
+        fromSecondScreen.voltageData.l1 ? fromSecondScreen.voltageData.l1 : 0,
+      );
+      data.append(
+        'l2',
+        fromSecondScreen.voltageData.l2 ? fromSecondScreen.voltageData.l2 : 0,
+      );
+      data.append(
+        'l3',
+        fromSecondScreen.voltageData.l3 ? fromSecondScreen.voltageData.l3 : 0,
+      );
+      data.append(
+        'phase',
+        fromSecondScreen.voltageData.phase
+          ? fromSecondScreen.voltageData.phase
+          : 0,
+      );
+      data.append(
+        'frequency',
+        fromSecondScreen.voltageData.frequency
+          ? fromSecondScreen.voltageData.frequency
+          : 0,
+      );
+      data.append(
+        'battery_voltage',
+        fromSecondScreen.voltageData.battery_voltage
+          ? fromSecondScreen.voltageData.battery_voltage
+          : 0,
+      );
+      data.append(
+        'hours',
+        fromSecondScreen.voltageData.hours
+          ? fromSecondScreen.voltageData.hours
+          : 0,
+      );
+
       // return;
       // data.append('custom_field', newArray);
       newArray.map(item => {
@@ -127,8 +170,6 @@ const SpringFallSerivce6 = ({navigation, route}) => {
         }
       });
 
-      console.log('DATA', data);
-      console.log('IS THIS AN ARRAY', newArray);
       var requestOptions = {
         method: 'POST',
         headers: {

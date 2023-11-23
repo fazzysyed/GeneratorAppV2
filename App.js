@@ -30,6 +30,7 @@ import WarrantyCall1 from './src/Screens/Technician/WarrantyCall1';
 import WarrantyCall2 from './src/Screens/Technician/WarrantyCall2';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Reading from './src/Screens/Technician/Voltage';
 import {loginUser} from './src/store/Actions/actions';
 import Splash from './src/Screens/Splash';
 import InCompleteServiceCalls from './src/Screens/Technician/IncompleteSeriviceCalls';
@@ -117,6 +118,12 @@ const TechnicianStack = () => {
         options={{headerShown: null}}
         name="AddGenerator"
         component={AddGenerator}
+      />
+
+      <Stack.Screen
+        options={{headerShown: null}}
+        name="Reading"
+        component={Reading}
       />
 
       <Stack.Screen
