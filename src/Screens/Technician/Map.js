@@ -100,8 +100,8 @@ const Map = ({navigation}) => {
                 onRegionChange={onRegionChange}
                 onRegionChangeComplete={onRegionChangeComplete}
                 initialRegion={{
-                  latitude: '33.6427135',
-                  longitude: '73.0809961',
+                  latitude: lat,
+                  longitude: long,
                   latitudeDelta: LATITUDE_DELTA,
                   longitudeDelta: LONGITUDE_DELTA,
                 }}>

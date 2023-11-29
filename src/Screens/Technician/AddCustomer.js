@@ -54,21 +54,6 @@ const AddCustomer = ({navigation}) => {
   // }, []);
 
   const technicianLogin = () => {
-    navigation.navigate('AddGenerator', {
-      data: {
-        email: email,
-        // password: password,
-        fname: name,
-        address: address,
-        homephone: homephone,
-        mobile: mobile,
-        // latitude: lat,
-        // longitude: long,
-        zip: zip,
-        customeraddress: address,
-        state: state,
-      },
-    });
     if (
       email.length &&
       homephone.length &&

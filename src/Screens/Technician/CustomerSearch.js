@@ -69,9 +69,13 @@ const CustomerSearch = ({navigation}) => {
         setLoading(false);
       });
   };
-  useEffect(() => {
-    getCustomers();
-  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getCustomers();
+    }, []),
+  );
+
   // useFocusEffect(
   //   React.useCallback(() => {
   //     setLoading(true);

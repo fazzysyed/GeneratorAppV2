@@ -15,7 +15,7 @@ import {TextInput} from 'react-native-paper';
 import Service from '../../components/Service';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
-
+import {useFocusEffect} from '@react-navigation/native';
 const History = ({route, navigation}) => {
   const user = useSelector(state => state.Reducer.user);
 
@@ -41,9 +41,11 @@ const History = ({route, navigation}) => {
     },
   ]);
 
-  useEffect(() => {
-    getServices();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getServices();
+    }, []),
+  );
 
   const getServices = () => {
     setLoading(true);
